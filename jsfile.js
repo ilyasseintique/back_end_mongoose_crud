@@ -5,7 +5,7 @@ const uri = process.env.Mongo_uri; //we can take our data from process.env
     .then(()=>console.log("connection done"))
     .catch((error)=>console.error("there is some issues in connection ",error))
 const {Schema} = mongoose; //destructing the Schema property from mongoose library 
-my_schema = new Schema({ //defining new schema
+const my_schema = new Schema({ //defining new schema
     age : {type : Number, required : true},
     name : {type : String, required : true, unique : true},
     favoritfood : [String]
@@ -45,7 +45,7 @@ async function findingbyid(id){
         console.log("the document is not found");
     }else{
         console.log("the original document is:",doc);
-        await doc.favoritfood.push("hamburger");
+        doc.favoritfood.push("hamburger");
         await doc.save();
         console.log("the modified is:",doc)
     }
@@ -56,6 +56,7 @@ async function findbyname(Name){
     console.log("the new doc is :",doc);
     
 }
+findbyname("laila")
 async function findandrem(id) {
     try{
         await person.findByIdAndRemove(id)
@@ -64,9 +65,11 @@ async function findandrem(id) {
         console.error("the error is:",err)
     }
 }
+findandrem("691b6103d6df7db6b373a41a");
 async function chainofqueries() {
     const data = person.find({favoritfood : {$in : ["burritos"]}}).sort({name:1}).limit(3).select("-age").exec((err,data)=>{
         if(err) return console.error(err);
         console.log(data);
     })
 }
+chainofqueries()
